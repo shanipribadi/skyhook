@@ -7,7 +7,9 @@ import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
 import io.netty.channel.EventLoopGroup
 import io.netty.channel.socket.ServerSocketChannel
+import io.netty.util.concurrent.GlobalEventExecutor
 import mu.KotlinLogging
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -91,6 +93,9 @@ class SkyhookServer @Inject constructor(
         bossGroup.shutdownGracefully().sync()
         workerGroup.shutdownGracefully().sync()
         started = false
+
+        // https://github.com/netty/netty/issues/6596
+        GlobalEventExecutor.INSTANCE.awaitInactivity(5, TimeUnit.SECONDS)
     }
 
     private fun bindAndListen() {

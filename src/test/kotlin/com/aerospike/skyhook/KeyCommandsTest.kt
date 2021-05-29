@@ -10,6 +10,7 @@ class KeyCommandsTest() : SkyhookIntegrationTestBase() {
     private fun setup(n: Int = 3) {
         for (i in 1..n) {
             writeCommand("${RedisCommand.SET.name} key$i val$i")
+            Thread.sleep(5)
             assertEquals(ok, readString())
         }
     }
