@@ -13,7 +13,7 @@ object Typed {
             return Value.DoubleValue(String(wireVal).toDouble())
         } catch (e: NumberFormatException) {
         }
-        return Value.StringValue(wireVal.toString(Charsets.UTF_8))
+        return getStringValue(wireVal)
     }
 
     fun getStringValue(wireVal: ByteArray): Value {
@@ -30,5 +30,9 @@ object Typed {
 
     fun getDouble(wireVal: ByteArray): Double {
         return String(wireVal).toDouble()
+    }
+
+    fun getBytesValue(wireVal: ByteArray): Value.BytesValue {
+        return Value.BytesValue(wireVal)
     }
 }

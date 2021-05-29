@@ -125,13 +125,13 @@ class SetCommandListener(
                     i++
                 }
 
-                Params(writePolicy, Typed.getValue(cmd.args[2]))
+                Params(writePolicy, Typed.getBytesValue(cmd.args[2]))
             }
             RedisCommand.SETNX -> {
                 require(cmd.argCount == 3) { argValidationErrorMsg(cmd) }
 
                 writePolicy.recordExistsAction = RecordExistsAction.CREATE_ONLY
-                Params(writePolicy, Typed.getValue(cmd.args[2]))
+                Params(writePolicy, Typed.getBytesValue(cmd.args[2]))
             }
             RedisCommand.SETEX -> {
                 require(cmd.argCount == 4) { argValidationErrorMsg(cmd) }
@@ -139,7 +139,7 @@ class SetCommandListener(
                 val exp = Typed.getInteger(cmd.args[2])
                 require(exp > 0) { "invalid expire time in setex" }
                 writePolicy.expiration = exp
-                Params(writePolicy, Typed.getValue(cmd.args[3]))
+                Params(writePolicy, Typed.getBytesValue(cmd.args[3]))
             }
             RedisCommand.PSETEX -> {
                 require(cmd.argCount == 4) { argValidationErrorMsg(cmd) }
@@ -149,7 +149,7 @@ class SetCommandListener(
                 val exp = ((expMs + 999) / 1000).toInt()
                 require(exp > 0) { "invalid expire time in psetex" }
                 writePolicy.expiration = exp
-                Params(writePolicy, Typed.getValue(cmd.args[3]))
+                Params(writePolicy, Typed.getBytesValue(cmd.args[3]))
             }
             else -> {
                 throw IllegalArgumentException(cmd.command.toString())
